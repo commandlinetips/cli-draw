@@ -1,16 +1,17 @@
+import curses
 import json
 from pathlib import Path
 
 DEFAULT_CONFIG = {
     "colors": [
-        {"id": 0, "name": "white", "hex": "#FFFFFF"},
+        {"id": 0, "name": "black", "hex": "#000000"},
         {"id": 1, "name": "red", "hex": "#FF0000"},
         {"id": 2, "name": "green", "hex": "#00FF00"},
         {"id": 3, "name": "yellow", "hex": "#FFFF00"},
         {"id": 4, "name": "blue", "hex": "#0000FF"},
         {"id": 5, "name": "magenta", "hex": "#FF00FF"},
         {"id": 6, "name": "cyan", "hex": "#00FFFF"},
-        {"id": 7, "name": "black", "hex": "#000000"},
+        {"id": 7, "name": "white", "hex": "#FFFFFF"},
     ],
     "brushes": ["#", "*", ".", " ", "o", "x", "@", "+"]
 }
@@ -32,13 +33,24 @@ def hex_to_curses_color(hex_color: str) -> int:
     r = int(hex_color[0:2], 16)
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
-    if r > 127:
-        r = 1
-    if g > 127:
-        g = 1
-    if b > 127:
-        b = 1
-    return r * 4 + g * 2 + b
+
+    # Map the configured RGB color to the closest standard curses color.
+    palette = [
+        (curses.COLOR_BLACK, (0, 0, 0)),
+        (curses.COLOR_RED, (255, 0, 0)),
+        (curses.COLOR_GREEN, (0, 255, 0)),
+        (curses.COLOR_YELLOW, (255, 255, 0)),
+        (curses.COLOR_BLUE, (0, 0, 255)),
+        (curses.COLOR_MAGENTA, (255, 0, 255)),
+        (curses.COLOR_CYAN, (0, 255, 255)),
+        (curses.COLOR_WHITE, (255, 255, 255)),
+    ]
+
+    def distance(candidate: tuple[int, int, int]) -> int:
+        cr, cg, cb = candidate
+        return (r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2
+
+    return min(palette, key=lambda item: distance(item[1]))[0]
 
 
 def load_config() -> dict:
@@ -80,7 +92,3 @@ def get_color_names(config: dict) -> list[str]:
 
 def get_brushes(config: dict) -> list[str]:
     return config.get("brushes", DEFAULT_CONFIG["brushes"])
-
-
-def get_brushes(config: dict) -> list[str]:
-    return config.get("brushes", DEFAULT_CONFIG.get("brushes", ["#", "*", ".", " "]))
