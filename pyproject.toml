@@ -1,0 +1,17 @@
+[project]
+name = "cli-draw"
+version = "0.1.0"
+description = "Terminal drawing canvas with mouse support"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyperclip>=1.8.2",
+]
+
+[project.scripts]
+cli-draw = "cli_draw.app:run"
+build = "cli_draw.__main__:main"
+
+[build-system]
+requires = ["uv_build>=0.11.13,<0.12"]
+build-backend = "uv_build"
