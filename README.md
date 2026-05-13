@@ -1,4 +1,4 @@
-# cli-draw
+# cli-draw (Made with [lightcode](https://github.com/Kartik-2239/lightcode))
 
 A small terminal drawing tool with mouse support.
 
@@ -60,3 +60,37 @@ uv run cli-draw artwork.txt --save output.txt
 
 - Files saved by the app keep ANSI colors.
 - If mouse drag does not work, use a terminal with mouse reporting enabled.
+
+## Config
+
+The app stores config here:
+
+```bash
+~/.cli-draw/config.json
+```
+
+It is created automatically the first time you run `cli-draw`.
+
+Example:
+
+```json
+{
+  "colors": [
+    { "id": 0, "name": "black", "hex": "#000000" },
+    { "id": 1, "name": "red", "hex": "#FF0000" },
+    { "id": 2, "name": "green", "hex": "#00FF00" },
+    { "id": 3, "name": "yellow", "hex": "#FFFF00" },
+    { "id": 4, "name": "blue", "hex": "#0000FF" },
+    { "id": 5, "name": "magenta", "hex": "#FF00FF" },
+    { "id": 6, "name": "cyan", "hex": "#00FFFF" },
+    { "id": 7, "name": "white", "hex": "#FFFFFF" }
+  ],
+  "brushes": ["#", "*", ".", " ", "o", "x", "@", "+"]
+}
+```
+
+You can change:
+- `colors`: the 8 colors used by keys `0` to `7`
+- `brushes`: the default brush characters available in the config
+
+Color values should be hex strings like `#FF0000`.
