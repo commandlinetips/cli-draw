@@ -2,6 +2,7 @@
 
 A small terminal drawing tool with mouse support.
 
+![cli-draw demo](assets/cli-draw.gif)
 ## Install
 
 Clone the repo:
