@@ -32,7 +32,24 @@ jobs:
             - name: build the tool
               run: uv build --out-dir dist
             
-            - name: Create GitHub Release
+    release:
+        needs: build
+        if: startsWith(github.ref, 'refs/tags/')
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Download artifacts
+              uses: actions/download-artifact@v5
+              with:
+                path: dist
+
+            - name: Flatten files
+              run: |
+                mkdir -p release
+                find dist -type f -exec mv {} release/ \;
+
+            - name: Create Release
               uses: softprops/action-gh-release@v2
               with:
-                files: dist/*
+                files: release/*
