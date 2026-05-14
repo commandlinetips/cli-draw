@@ -2,3 +2,4 @@ __pycache__/
 .DS_Store
 save.txt
 skills-lock.json
+src/cli_draw/__pycache__/
